@@ -1,0 +1,4 @@
+.idea/
+cspeople/scraped/full
+cspeople/scraped/full/*
+__pycache__/
