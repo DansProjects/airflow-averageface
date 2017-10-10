@@ -2,3 +2,4 @@
 cspeople/scraped/full
 cspeople/scraped/full/*
 __pycache__/
+shape_predictor_68_face_landmarks.dat
