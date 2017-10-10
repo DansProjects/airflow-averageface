@@ -5,3 +5,6 @@ Project will use Airflow and Scrapy to build out a data pipeline to:
  2. Extract profile pictures from HTML
  3. Determine the average face of all pictures using OpenCV
  4. Save average face to HTML file
+ 
+
+![Alt text](/averageface/images/barak-obama-landmarks.png?raw=true)
