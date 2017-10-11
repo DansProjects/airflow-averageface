@@ -1,60 +1,83 @@
 import numpy as np
 import cv2
 import dlib
+import os
 
-image_path = "images/barak-obama.jpg"
-cascade_path = "frontalface_default.xml"
-predictor_path = "shape_predictor_68_face_landmarks.dat"
 
-# Create the haar cascade
-faceCascade = cv2.CascadeClassifier(cascade_path)
+class LandmarkClassifier:
 
-# create the landmark predictor
-predictor = dlib.shape_predictor(predictor_path)
+    cascade_path = "frontalface_default.xml"
+    predictor_path = "shape_predictor_68_face_landmarks.dat"
 
-# Read the image
-image = cv2.imread(image_path)
+    def __init__(self, image_dir):
+        # Create the haar cascade
+        self.faceCascade = cv2.CascadeClassifier(self.cascade_path)
+        # create the landmark predictor
+        self.predictor = dlib.shape_predictor(self.predictor_path)
+        # set image directory
+        self.image_dir = image_dir
 
-# convert the image to grayscale
-gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    def face_detection(self, img):
+        # convert the image to gray-scale
+        img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
-# Detect faces in the image
-faces = faceCascade.detectMultiScale(
-    gray,
-    scaleFactor=1.05,
-    minNeighbors=5,
-    minSize=(100, 100),
-    flags=cv2.CASCADE_SCALE_IMAGE
-)
+        # Detect faces in the image
+        faces = self.faceCascade.detectMultiScale(
+            img_gray,
+            scaleFactor=1.05,
+            minNeighbors=5,
+            minSize=(100, 100),
+            flags=cv2.CASCADE_SCALE_IMAGE
+        )
 
-print("Found {0} faces!".format(len(faces)))
+        return faces
 
-# Draw a rectangle around the faces
-for (x, y, w, h) in faces:
-    cv2.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 2)
+    def classify(self):
+        folder = self.image_dir
+        images = []
+        for filename in os.listdir(folder):
+            if filename.endswith('.jpg'):
+                print('Processing {}.'.format(filename))
+                img_path = os.path.join(folder, filename)
+                img = cv2.imread(img_path)
+                landmarks = self.get_landmarks(img)
+                if landmarks is not None:
+                    self.write_to_file(landmarks, img_path)
+                else:
+                    print('{} has no faces'.format(filename))
 
-    # Converting the OpenCV rectangle coordinates to Dlib rectangle
-    dlib_rect = dlib.rectangle(int(x), int(y), int(x + w), int(y + h))
-    print(dlib_rect)
+        return images
 
-    detected_landmarks = predictor(image, dlib_rect).parts()
+    def get_landmarks(self, image):
 
-    landmarks = np.matrix([[p.x, p.y] for p in detected_landmarks])
+        faces = self.face_detection(image)
 
-    # copying the image so we can see side-by-side
-    image_copy = image.copy()
+        for (x, y, w, h) in faces:
 
-    for idx, point in enumerate(landmarks):
-        pos = (point[0, 0], point[0, 1])
+            # Converting the OpenCV rectangle coordinates to Dlib rectangle
+            dlib_rect = dlib.rectangle(int(x), int(y), int(x + w), int(y + h))
+            detected_landmarks = self.predictor(image, dlib_rect).parts()
+            landmarks = np.matrix([[p.x, p.y] for p in detected_landmarks])
 
-        # annotate the positions
-        cv2.putText(image_copy, str(idx), pos,
-                    fontFace=cv2.FONT_HERSHEY_SIMPLEX,
-                    fontScale=0.4,
-                    color=(0, 0, 255))
+            # should only have one face per image
+            return landmarks
 
-        # draw points on the landmark positions
-        cv2.circle(image_copy, pos, 3, color=(0, 255, 255))
+    def write_to_file(self, landmarks, img_path):
 
-cv2.imshow("Landmarks found", image_copy)
-cv2.waitKey(0)
+        # add txt to end of file to denote landmark representation of image
+        file = open(img_path + '.txt', "w")
+
+        for idx, point in enumerate(landmarks):
+
+            file.write(str(point[0, 0]))
+            file.write(" ")
+            file.write(str(point[0, 1]))
+            file.write("\n")
+
+        file.close()
+
+        return True
+
+#image_path = "../cspeople/scraped/full"
+#LC = LandmarkClassifier(image_path)
+#(LC.classify())
