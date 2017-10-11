@@ -8,7 +8,7 @@ class CSGradPeople(scrapy.Spider):
     # list of allowed domains
     allowed_domains = ['http://www.cs.princeton.edu/people/grad']
     start_urls = [
-        'http://www.cs.princeton.edu/people/restech',
+        'http://www.cs.princeton.edu/people/grad',
     ]
 
     def parse(self, response):

@@ -2,3 +2,5 @@ scrapy==1.4.0
 opencv==3.3.0
 dlib==19.4
 airflow
+cv2
+numpy

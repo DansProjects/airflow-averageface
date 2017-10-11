@@ -10,8 +10,8 @@ NEWSPIDER_MODULE = 'cspeople.spiders'
 ITEM_PIPELINES = {
   'cspeople.pipelines.CSGradPeoplePipeline': 1
 }
-IMAGES_STORE = 'cspeople/scraped/'
-FILES_STORE = "cspeople/scraped/"
+IMAGES_STORE = PROJECT_ROOT + '/scraped/'
+FILES_STORE =  PROJECT_ROOT + '/scraped/'
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'cspeople (+http://www.yourdomain.com)'
