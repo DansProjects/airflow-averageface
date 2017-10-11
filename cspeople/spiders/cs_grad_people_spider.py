@@ -8,13 +8,13 @@ class CSGradPeople(scrapy.Spider):
     # list of allowed domains
     allowed_domains = ['http://www.cs.princeton.edu/people/grad']
     start_urls = [
-        'http://www.cs.princeton.edu/people/grad',
+        'http://www.cs.princeton.edu/people/restech',
     ]
 
     def parse(self, response):
         sel = Selector(response)
 
-        xpath = '//div[@class="person-photo"]/img/@src'
+        xpath = '//div[@class="person-photo"]/img/@src | //div[@class="person-photo"]/a/img/@src'
         images = sel.xpath(xpath).extract()
 
         for image in images:
