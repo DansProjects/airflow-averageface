@@ -8,14 +8,16 @@ class LandmarkClassifier:
 
     cascade_path = "frontalface_default.xml"
     predictor_path = "shape_predictor_68_face_landmarks.dat"
+    PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 
-    def __init__(self, image_dir):
+    def __init__(self, image_dir=PROJECT_ROOT+"/../cspeople/scraped/full"):
         # Create the haar cascade
         self.faceCascade = cv2.CascadeClassifier(self.cascade_path)
         # create the landmark predictor
         self.predictor = dlib.shape_predictor(self.predictor_path)
         # set image directory
         self.image_dir = image_dir
+        print(self.image_dir)
 
     def face_detection(self, img):
         # convert the image to gray-scale
@@ -45,6 +47,8 @@ class LandmarkClassifier:
                     self.write_to_file(landmarks, img_path)
                 else:
                     print('{} has no faces'.format(filename))
+                    # remove file as it has no faces
+                    os.remove(img_path)
 
         return images
 
@@ -78,6 +82,6 @@ class LandmarkClassifier:
 
         return True
 
-#image_path = "../cspeople/scraped/full"
-#LC = LandmarkClassifier(image_path)
+
+#LC = LandmarkClassifier()
 #(LC.classify())
