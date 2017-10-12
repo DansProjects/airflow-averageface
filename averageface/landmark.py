@@ -8,9 +8,9 @@ class LandmarkClassifier:
 
     cascade_path = "frontalface_default.xml"
     predictor_path = "shape_predictor_68_face_landmarks.dat"
-    PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
+    landmark_proj_root = os.path.abspath(os.path.dirname(__file__))
 
-    def __init__(self, image_dir=PROJECT_ROOT+"/../cspeople/scraped/full"):
+    def __init__(self, image_dir=landmark_proj_root+"/../cspeople/scraped/full"):
         # Create the haar cascade
         self.faceCascade = cv2.CascadeClassifier(self.cascade_path)
         # create the landmark predictor
