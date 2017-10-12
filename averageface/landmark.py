@@ -83,5 +83,5 @@ class LandmarkClassifier:
         return True
 
 
-#LC = LandmarkClassifier()
-#(LC.classify())
+LC = LandmarkClassifier()
+LC.classify()

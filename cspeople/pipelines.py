@@ -13,6 +13,5 @@ class CSGradPeoplePipeline(ImagesPipeline):
         # log.msg(image_guid, level=log.DEBUG)
         # return 'cspeople/%s' % image_guid + '.jpg'
 
-
     def get_media_requests(self, item, info):
         yield Request(item['image_urls'][0], meta=item)
