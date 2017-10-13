@@ -15,7 +15,7 @@ Facial landmark (dlib) library will detect facial features (68 points) as shown 
 <img src="/averageface/images/barak-obama-landmarks.png" height="450" width="425"/>
 
 (simplified) Points will be averaged to produce an composition of all of the profile images. Below is the actual 
-output for the averaged face of a Princeton CS graduate student.
+output for the averaged face of a Princeton CS graduate student.  
 <img src="/averageface/images/averageface-csgrad.jpg" height="450" width="450"/>
 
  1. Copy the DAG file: ```dags/average_faces_pipeline.py``` to your Airflow directory (wherever you initialized it)
